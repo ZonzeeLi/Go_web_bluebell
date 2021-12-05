@@ -1,0 +1,149 @@
+basePath: /api/v1
+definitions:
+  controller._ResponseCommunity:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        description: 数据
+        items:
+          $ref: '#/definitions/models.Community'
+        type: array
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  controller._ResponseCommunityDetail:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        description: 数据
+        items:
+          $ref: '#/definitions/models.CommunityDetail'
+        type: array
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  controller._ResponsePostList:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      data:
+        description: 数据
+        items:
+          $ref: '#/definitions/models.ApiPostDetail'
+        type: array
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  controller._ResponseSuccess:
+    properties:
+      code:
+        description: 业务响应状态码
+        type: integer
+      message:
+        description: 提示信息
+        type: string
+    type: object
+  models.ApiPostDetail:
+    properties:
+      author_id:
+        type: integer
+      author_name:
+        type: string
+      community_id:
+        type: integer
+      content:
+        description: 帖子详情
+        type: string
+      create_time:
+        type: string
+      id:
+        type: integer
+      introduction:
+        type: string
+      name:
+        type: string
+      status:
+        type: integer
+      title:
+        description: 帖子题目
+        type: string
+      vote_num:
+        type: integer
+    required:
+    - community_id
+    - content
+    - title
+    type: object
+  models.Community:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.CommunityDetail:
+    properties:
+      create_time:
+        type: string
+      id:
+        type: integer
+      introduction:
+        type: string
+      name:
+        type: string
+    type: object
+host: 127.0.0.1:8081
+info:
+  contact:
+    name: ZonzeeLi
+    url: zonzeeli0523@gmail.com
+  description: Go web开发进阶项目实战课程bluebell 李文周
+  title: bluebell项目接口文档
+  version: "1.0"
+paths:
+  /posts2:
+    get:
+      consumes:
+      - application/json
+      description: 帖子投票的接口函数
+      parameters:
+      - description: Bearer JWT
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 赞成票(1)or反对票(-1),取消投票(0)
+        enum:
+        - 1
+        - 0
+        - -1
+        example: "1"
+        in: query
+        name: direction
+        type: string
+      - description: UserID 从请求中获取当前的用户
+        in: query
+        name: post_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller._ResponseSuccess'
+      security:
+      - ApiKeyAuth: []
+      summary: 帖子投票处理函数
+      tags:
+      - 帖子投票详情
+swagger: "2.0"
